@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # fedis_mockup_demo
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# fedis-mockup-app
+>>>>>>> 010ab2a111a73ec808aa4ec3944089ead0e126f3
