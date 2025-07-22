@@ -217,7 +217,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                            Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 0,
                               horizontal: 10,
                             ),
