@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+import 'route_names.dart';
+import 'package:fedis_mockup_demo/auth/presentation/pages/signup_page.dart';
+import 'package:fedis_mockup_demo/auth/presentation/pages/login_screen.dart';
+
+class CustomRouter {
+  static Route<dynamic>? allRoutes(RouteSettings settings) {
+    switch (settings.name) {
+      case registerScreen:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => const SignUpScreen());
+      case loginScreen:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => const SignInScreen());
+      default:
+        return null;
+    }
+  }
+}
