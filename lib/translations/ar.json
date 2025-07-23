@@ -1,0 +1,30 @@
+{
+  "welcome_back": "مرحبًا بعودتك!",
+  "enter_details": "أدخل بياناتك الشخصية لبدء حسابك",
+  "login": "تسجيل الدخول",
+  "sign_up": "إنشاء حساب",
+
+  "get_started": "ابدأ الآن",
+  "full_name": "الاسم الكامل",
+  "enter_full_name": "أدخل الاسم الكامل",
+  "please_enter_full_name": "يرجى إدخال الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "enter_email": "أدخل البريد الإلكتروني",
+  "please_enter_email": "يرجى إدخال البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "enter_password": "أدخل كلمة المرور",
+  "please_enter_password": "يرجى إدخال كلمة المرور",
+  "agree_processing": "أوافق على معالجة ",
+  "personal_data": "البيانات الشخصية",
+  "sign_up_with": "إنشاء حساب باستخدام",
+  "already_have_account": "لديك حساب بالفعل؟",
+  "sign_in": "تسجيل الدخول",
+  "processing_data": "جاري معالجة البيانات",
+  "please_agree": "يرجى الموافقة على معالجة البيانات الشخصية",
+
+
+  "remember_me": "تذكرني",
+  "forget_password": "هل نسيت كلمة المرور؟",
+  "sign_in_with": "تسجيل الدخول باستخدام",
+  "dont_have_account": "ليس لديك حساب؟"
+}

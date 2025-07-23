@@ -1,0 +1,30 @@
+{
+  "welcome_back": "Welcome Back!",
+  "enter_details": "Enter personal details to start your account",
+  "login": "Login",
+  "sign_up": "Sign up",
+
+  "get_started": "Get Started",
+  "full_name": "Full Name",
+  "enter_full_name": "Enter Full Name",
+  "please_enter_full_name": "Please enter Full name",
+  "email": "Email",
+  "enter_email": "Enter Email",
+  "please_enter_email": "Please enter Email",
+  "password": "Password",
+  "enter_password": "Enter Password",
+  "please_enter_password": "Please enter Password",
+  "agree_processing": "I agree to the processing of ",
+  "personal_data": "Personal data",
+  "sign_up_with": "Sign up with",
+  "already_have_account": "Already have an account?",
+  "sign_in": "Sign in",
+  "processing_data": "Processing Data",
+  "please_agree": "Please agree to the processing of personal data",
+
+
+  "remember_me": "Remember me",
+  "forget_password": "Forget password?",
+  "sign_in_with": "Sign in with",
+  "dont_have_account": "Don't have an account?"
+}

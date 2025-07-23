@@ -1,0 +1,15 @@
+const String welcomeBack = 'welcome_back';
+const String email = 'email';
+const String enterEmail = 'enter_email';
+const String pleaseEnterEmail = 'please_enter_email';
+const String password = 'password';
+const String enterPassword = 'enter_password';
+const String pleaseEnterPassword = 'please_enter_password';
+const String rememberMe = 'remember_me';
+const String forgetPassword = 'forget_password';
+const String signIn = 'sign_in';
+const String signInWith = 'sign_in_with';
+const String dontHaveAccount = 'dont_have_account';
+const String signUp = 'sign_up';
+const String processingData = 'processing_data';
+const String pleaseAgree = 'please_agree';
