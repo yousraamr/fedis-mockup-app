@@ -1,8 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/login_screen.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import '../widgets/custom_scaffold.dart';
+import 'package:fedis_mockup_demo/translations/signup_strings.dart';
+import 'package:fedis_mockup_demo/utils/snackbar.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -45,10 +49,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       // get started text
                       Text(
-                        'Get Started',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w900,
+                        'get_started'.tr(),
+                        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                           color: lightColorScheme.primary,
                         ),
                       ),
@@ -59,13 +61,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Full name';
+                            return 'please_enter_full_name'.tr();
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Full Name'),
-                          hintText: 'Enter Full Name',
+                          label: Text('full_name'.tr()),
+                          hintText: 'enter_full_name'.tr(),
                           hintStyle: TextStyle(
                             color: lightColorScheme.onBackground,
                           ),
@@ -90,13 +92,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Email';
+                            return 'please_enter_password'.tr();
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Email'),
-                          hintText: 'Enter Email',
+                          label: Text('email'.tr()),
+                          hintText: 'enter_email'.tr(),
                           hintStyle: TextStyle(
                             color: lightColorScheme.onBackground,
                           ),
@@ -123,13 +125,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         obscuringCharacter: '*',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Password';
+                            return 'please_enter_password'.tr();
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          label: const Text('Password'),
-                          hintText: 'Enter Password',
+                          label: Text('password'.tr()),
+                          hintText: 'enter_password'.tr(),
                           hintStyle: TextStyle(
                             color: lightColorScheme.onBackground,
                           ),
@@ -163,15 +165,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             activeColor: lightColorScheme.primary,
                           ),
                            Text(
-                            'I agree to the processing of ',
+                             'agree_processing'.tr(),
                             style: TextStyle(
                               color: lightColorScheme.onBackground,
                             ),
                           ),
                           Text(
-                            'Personal data',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                            'personal_data'.tr(),
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                               color: lightColorScheme.primary,
                             ),
                           ),
@@ -187,20 +188,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onPressed: () {
                             if (_formSignupKey.currentState!.validate() &&
                                 agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
+                              showSuccessSnackBar(context, 'processing_data'.tr());
                             } else if (!agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please agree to the processing of personal data')),
-                              );
+                                  showErrorSnackBar(context, 'please_agree'.tr());
                             }
                           },
-                          child: const Text('Sign up'),
+                          child: Text('sign_up'.tr()),
                         ),
                       ),
                       const SizedBox(
@@ -222,7 +215,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               horizontal: 10,
                             ),
                             child: Text(
-                              'Sign up with',
+                              'sign_up_with'.tr(),
                               style: TextStyle(
                                 color: lightColorScheme.onBackground,
                               ),
@@ -247,7 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                            Text(
-                            'Already have an account? ',
+                             'already_have_account'.tr(),
                             style: TextStyle(
                               color: lightColorScheme.onBackground,
                             ),
@@ -262,9 +255,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               );
                             },
                             child: Text(
-                              'Sign in',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                              'sign_in'.tr(),
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                 color: lightColorScheme.primary,
                               ),
                             ),
