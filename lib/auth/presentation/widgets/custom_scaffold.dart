@@ -7,6 +7,7 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -16,10 +17,10 @@ class CustomScaffold extends StatelessWidget {
           Image.asset(
             'assets/images/enterance.jpg',
             fit: BoxFit.cover,
-            //width: double.infinity,
+            width: double.infinity,
             height: double.infinity,
           ),
-           SafeArea(
+          SafeArea(
             child: child!,
           ),
         ],
