@@ -39,18 +39,33 @@ ThemeData lightMode = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all<Color>(
-        lightColorScheme.primary, // Slightly darker shade for the button
+        lightColorScheme.primary,
       ),
-      foregroundColor:
-      MaterialStateProperty.all<Color>(Colors.white), // text color
-      elevation: MaterialStateProperty.all<double>(5.0), // shadow
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      elevation: MaterialStateProperty.all<double>(5.0),
       padding: MaterialStateProperty.all<EdgeInsets>(
-          const EdgeInsets.symmetric(horizontal: 20, vertical: 18)),
+        const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      ),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16), // Adjust as needed
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
+    ),
+  ),
+  textTheme: TextTheme(
+    headlineLarge: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: lightColorScheme.primary,
+      fontSize: 30.0,
+    ),
+    bodyLarge: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: lightColorScheme.onBackground,
+    ),
+    bodyMedium: TextStyle(
+      fontWeight: FontWeight.normal,
+      color: lightColorScheme.onBackground,
     ),
   ),
 );
@@ -59,5 +74,20 @@ ThemeData darkMode = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorScheme: darkColorScheme,
-);
 
+  textTheme: TextTheme(
+    headlineLarge: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: darkColorScheme.primary,
+      fontSize: 30.0,
+    ),
+    bodyLarge: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: darkColorScheme.onBackground,
+    ),
+    bodyMedium: TextStyle(
+      fontWeight: FontWeight.normal,
+      color: darkColorScheme.onBackground,
+    ),
+  ),
+);
