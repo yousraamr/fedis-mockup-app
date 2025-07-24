@@ -6,13 +6,19 @@ class AuthDataSource {
 
   AuthDataSource(this.dio);
 
-  Future<Response> login(String email, String password) async {
-    final response = await dio.post(ApiUrls.login, data: {
-      "email": email,
-      "password": password,
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    final response = await dio.post('https://cartverse-data.onrender.com/login', data: {
+      'email': email,
+      'password': password,
     });
-    return response;
+
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Login failed');
+    }
   }
+
 
   Future<Map<String, dynamic>> register(String name, String email, String password) async {
     final response = await dio.post(ApiUrls.register, data: {
