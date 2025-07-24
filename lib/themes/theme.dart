@@ -8,7 +8,7 @@ const lightColorScheme = ColorScheme(
   onSecondary: Color(0xFFFFFFFF),
   error: Color(0xFFBA1A1A),
   onError: Color(0xFFFFFFFF),
-  background: Color(0xFFFCFDF6),
+  background: Color(0xFFDCD2E1),
   onBackground: Color(0xFF1A1C18),
   shadow: Color(0xFF000000),
   outlineVariant: Color(0xFF8A8E87),
