@@ -21,10 +21,16 @@ class AuthProvider with ChangeNotifier {
         print("✅ Login Successful: ${data['accessToken']} for ${data['user']}");
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['accessToken']);
-        await prefs.setString('userName', data['user']['name'] ?? '');
+        await prefs.setString(
+          'userName',
+          '${data['user']['firstName']} ${data['user']['lastName']}',
+        );
         await prefs.setString('email', data['user']['email'] ?? '');
+
+        _setLoading(false);
         return data;
       } else {
+        _setLoading(false);
         print("❌ Login Failed - Missing token");
         return null;
       }
@@ -34,8 +40,6 @@ class AuthProvider with ChangeNotifier {
       return null;
     }
   }
-
-
 
   Future<Map<String, dynamic>?> register(
       BuildContext context, String name, String email, String password) async {
