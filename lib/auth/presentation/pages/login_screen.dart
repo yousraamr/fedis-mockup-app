@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/signup_page.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
+import 'package:fedis_mockup_demo/home/home_presentation/home_pages/home_screen.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/utils/snackbar.dart';
 
@@ -154,15 +155,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                            if (_formSignInKey.currentState!.validate() && rememberPassword) {
                               showSuccessSnackBar(context, 'processing_data'.tr());
+
+                              // Navigate to HomeScreen
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
                             } else if (!rememberPassword) {
                               showErrorSnackBar(context, 'please_agree'.tr());
                             }
                           },
                           child: Text('sign_in'.tr()),
                         ),
+
                       ),
                       const SizedBox(
                         height: 25.0,
