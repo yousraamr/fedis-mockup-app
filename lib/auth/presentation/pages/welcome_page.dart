@@ -7,8 +7,6 @@ import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/welcome_button.dart';
 import 'package:fedis_mockup_demo/translations/welcome_page_strings.dart';
-
-
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -36,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                         ),
                          TextSpan(
-                            text: '\n${enterDetails.tr()}',
+                             text: '\n${enterDetails.tr()}',
                             style: TextStyle(
                               fontSize: 20,
                               color: lightColorScheme.primary,
