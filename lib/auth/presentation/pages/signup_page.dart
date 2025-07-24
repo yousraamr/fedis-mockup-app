@@ -6,6 +6,8 @@ import 'package:fedis_mockup_demo/themes/theme.dart';
 import '../widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/translations/signup_strings.dart';
 import 'package:fedis_mockup_demo/utils/snackbar.dart';
+import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -18,6 +20,10 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -59,6 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // full name
                       TextFormField(
+                        controller: _nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please_enter_full_name'.tr();
@@ -90,6 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // email
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please_enter_password'.tr();
@@ -121,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       // password
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -164,8 +173,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                             activeColor: lightColorScheme.primary,
                           ),
-                           Text(
-                             'agree_processing'.tr(),
+                          Text(
+                            'agree_processing'.tr(),
                             style: TextStyle(
                               color: lightColorScheme.onBackground,
                             ),
@@ -185,14 +194,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
+                          onPressed: () async {
+                            if (_formSignupKey.currentState!.validate() && agreePersonalData) {
+                              final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+                              String name = _nameController.text.trim();
+                              String email = _emailController.text.trim();
+                              String password = _passwordController.text.trim();
+
+                              if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                                showErrorSnackBar(context, 'please_fill_all_fields'.tr());
+                                return;
+                              }
+
                               showSuccessSnackBar(context, 'processing_data'.tr());
+
+                              final result = await authProvider.register(context, name, email, password);
+
+                              if (result != null && result['accessToken'] != null) {
+                                print("✅ REGISTER RESULT: $result");
+                                print("TOKEN: ${result['accessToken']}");
+                                print("USER DETAILS: ${result['user']}");
+
+                                // Navigate to Login Screen
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                                );
+                              }
                             } else if (!agreePersonalData) {
-                                  showErrorSnackBar(context, 'please_agree'.tr());
+                              showErrorSnackBar(context, 'please_agree'.tr());
                             }
                           },
+
+
                           child: Text('sign_up'.tr()),
                         ),
                       ),
@@ -209,7 +244,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: lightColorScheme.outlineVariant.withOpacity(0.5),
                             ),
                           ),
-                           Padding(
+                          Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: 0,
                               horizontal: 10,
@@ -239,8 +274,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                           Text(
-                             'already_have_account'.tr(),
+                          Text(
+                            'already_have_account'.tr(),
                             style: TextStyle(
                               color: lightColorScheme.onBackground,
                             ),
