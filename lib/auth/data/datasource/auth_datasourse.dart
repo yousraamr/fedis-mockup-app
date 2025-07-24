@@ -7,15 +7,15 @@ class AuthDataSource {
   AuthDataSource(this.dio);
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await dio.post('https://cartverse-data.onrender.com/login', data: {
-      'email': email,
-      'password': password,
-    });
-
-    if (response.statusCode == 200) {
+    try {
+      final response = await dio.post('https://cartverse-data.onrender.com/login', data: {
+        'email': email,
+        'password': password,
+      });
       return response.data;
-    } else {
-      throw Exception('Login failed');
+    } on DioException catch (e) {
+      print('❌ Login API Error: ${e.response?.data}');
+      rethrow;
     }
   }
 
