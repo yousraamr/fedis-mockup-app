@@ -7,9 +7,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<bool> login(String email, String password) async {
-    final response = await remoteDataSource.login(email, password);
-    return response.statusCode == 200;
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    return await remoteDataSource.login(email, password);
   }
 
   @override
