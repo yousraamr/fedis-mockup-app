@@ -5,7 +5,7 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<bool> execute(String email, String password) async {
+  Future<Map<String, dynamic>> execute(String email, String password) async {
     return await repository.login(email, password);
   }
 }
