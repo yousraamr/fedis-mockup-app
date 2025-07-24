@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  String userName = "User"; // Default
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  /// Load user name from SharedPreferences
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('userName') ?? "User";
+    print("🔍 Loaded User Name: $name");
+    setState(() {
+      userName = name;
+    });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -23,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
 
-      // Bottom Navigation Bar
+      // ✅ Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -60,6 +78,37 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Hi, $userName!",
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: lightColorScheme.shadow,
+              ),
+            ),
+            Icon(Icons.notifications,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Icon(Icons.location_pin, color: Theme.of(context).colorScheme.onSurface),
+            const SizedBox(width: 8),
+            Text("Location, New Cairo",
+              style: TextStyle(color: Theme.of(context).colorScheme.outlineVariant),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -138,40 +187,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget _buildHeader(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Hi, Yousra!",
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: lightColorScheme.shadow,
-              ),
-            ),
-            Icon(Icons.notifications,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Icon(Icons.location_pin, color: Theme.of(context).colorScheme.onSurface),
-            const SizedBox(width: 8),
-            Text("Location, New Cairo",
-              style: TextStyle(color: Theme.of(context).colorScheme.outlineVariant),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 }
 
-// Supporting Widgets
+// Supporting Widgets remain unchanged
 class FoodItemWidget extends StatelessWidget {
   const FoodItemWidget({super.key});
 
@@ -272,7 +290,7 @@ class CardButton extends StatelessWidget {
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -297,7 +315,7 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
