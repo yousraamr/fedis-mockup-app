@@ -96,17 +96,25 @@ class _SignInScreenState extends State<SignInScreen> {
                                 showErrorSnackBar(context, 'please_agree'.tr());
                                 return;
                               }
-                              final success = await authProvider.login(
+                              final result = await authProvider.login(
                                 context,
                                 emailController.text,
                                 passwordController.text,
                               );
-                              if (success) {
+
+                              if (result != null) {
+                                print("✅ Login Successful");
+                                print("Token: ${result['accessToken']}");
+                                print("User Details: ${result['user']}");
+
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (_) => const HomeScreen()),
                                 );
+                              } else {
+                                print("❌ Login Failed");
                               }
+
                             }
                           },
                           child: authProvider.isLoading
