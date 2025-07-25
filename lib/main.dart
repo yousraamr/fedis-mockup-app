@@ -10,6 +10,10 @@ import 'package:fedis_mockup_demo/auth/domain/usecases/login_usecase.dart';
 import 'package:fedis_mockup_demo/auth/domain/usecases/register_usecase.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/welcome_page.dart';
+import 'package:fedis_mockup_demo/utils/custom_router.dart';
+import 'package:fedis_mockup_demo/home/home_presentation/home_view_model/nav_provider.dart';
+import 'package:fedis_mockup_demo/utils/route_names.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +39,9 @@ void main() async {
               registerUseCase: registerUseCase,
             ),
           ),
+          ChangeNotifierProvider(
+            create: (_) => NavProvider(),
+          ),
         ],
         child: const MyApp(),
       ),
@@ -57,7 +64,12 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: const WelcomeScreen(),
+      initialRoute: '/',
+      onGenerateRoute: CustomRouter.allRoutes,
+      routes: {
+        '/': (context) => const WelcomeScreen(),
+      },
     );
   }
 }
+
