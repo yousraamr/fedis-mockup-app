@@ -26,5 +26,10 @@
   "remember_me": "تذكرني",
   "forget_password": "هل نسيت كلمة المرور؟",
   "sign_in_with": "تسجيل الدخول باستخدام",
-  "dont_have_account": "ليس لديك حساب؟"
+  "dont_have_account": "ليس لديك حساب؟",
+
+  "home": "الرئيسية",
+  "cart": "السلة",
+  "favorites": "المفضلة",
+  "profile": "الملف الشخصي"
 }
