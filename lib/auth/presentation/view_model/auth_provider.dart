@@ -10,27 +10,30 @@ class AuthProvider with ChangeNotifier {
   AuthProvider({required this.loginUseCase, required this.registerUseCase});
 
   bool isLoading = false;
+  String? userName;
+  String? email;
 
   Future<Map<String, dynamic>?> login(BuildContext context, String email, String password) async {
     _setLoading(true);
     try {
       final data = await loginUseCase.execute(email, password);
       print("🔍 Login API Response: $data");
+      _setLoading(false);
 
       if (data['accessToken'] != null) {
         print("✅ Login Successful: ${data['accessToken']} for ${data['user']}");
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['accessToken']);
-        await prefs.setString(
-          'userName',
-          '${data['user']['firstName']} ${data['user']['lastName']}',
-        );
+        await prefs.setString('userName', data['user']['name'] ?? '');
         await prefs.setString('email', data['user']['email'] ?? '');
 
-        _setLoading(false);
+        // Update provider state
+        userName = data['user']['name'] ?? '';
+        this.email = data['user']['email'] ?? '';
+        notifyListeners();
+
         return data;
       } else {
-        _setLoading(false);
         print("❌ Login Failed - Missing token");
         return null;
       }
@@ -40,6 +43,8 @@ class AuthProvider with ChangeNotifier {
       return null;
     }
   }
+
+
 
   Future<Map<String, dynamic>?> register(
       BuildContext context, String name, String email, String password) async {
@@ -67,6 +72,14 @@ class AuthProvider with ChangeNotifier {
       );
       return null;
     }
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    userName = null;
+    email = null;
+    notifyListeners();
   }
 
   void _setLoading(bool value) {
