@@ -1,13 +1,21 @@
+import 'package:flutter/foundation.dart';
+
 class Logger {
   static void info(String message) {
-    print("ℹ️ INFO: $message");
+    if (kDebugMode) {
+      print("ℹ️ INFO: $message");
+    }
   }
 
   static void success(String message) {
-    print("✅ SUCCESS: $message");
+    if (kDebugMode) {
+      print("✅ SUCCESS: $message");
+    }
   }
 
   static void error(String message) {
-    print("❌ ERROR: $message");
+    if (kDebugMode) {
+      print("❌ ERROR: $message");
+    }
   }
 }
