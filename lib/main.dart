@@ -8,16 +8,19 @@ import 'package:fedis_mockup_demo/auth/data/datasource/auth_datasourse.dart';
 import 'package:fedis_mockup_demo/auth/data/repository/auth_repository_impl.dart';
 import 'package:fedis_mockup_demo/auth/domain/usecases/login_usecase.dart';
 import 'package:fedis_mockup_demo/auth/domain/usecases/register_usecase.dart';
+import 'package:fedis_mockup_demo/auth/domain/usecases/logout_usecase.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/welcome_page.dart';
-import 'package:fedis_mockup_demo/utils/custom_router.dart';
+import 'package:fedis_mockup_demo/core/utils/custom_router.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_view_model/nav_provider.dart';
-import 'package:fedis_mockup_demo/utils/route_names.dart';
-
+import 'package:fedis_mockup_demo/core/utils/route_names.dart';
+import 'package:fedis_mockup_demo/core/storage/cache_helper.dart';
+import 'package:fedis_mockup_demo/home/home_presentation/home_pages/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await CacheHelper.init();
 
   // Dependency Injection
   final dio = Dio();
@@ -25,6 +28,7 @@ void main() async {
   final authRepository = AuthRepositoryImpl(dataSource);
   final loginUseCase = LoginUseCase(authRepository);
   final registerUseCase = RegisterUseCase(authRepository);
+  final logoutUseCase = LogoutUseCase(authRepository);
 
   runApp(
     EasyLocalization(
@@ -37,6 +41,7 @@ void main() async {
             create: (_) => AuthProvider(
               loginUseCase: loginUseCase,
               registerUseCase: registerUseCase,
+              logoutUseCase: logoutUseCase,
             ),
           ),
           ChangeNotifierProvider(
@@ -57,19 +62,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fedis Mockup Demo',
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: lightColorScheme
-      ),
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      initialRoute: '/',
+      initialRoute: welcomeScreen,
       onGenerateRoute: CustomRouter.allRoutes,
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-      },
     );
   }
 }
-

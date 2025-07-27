@@ -33,6 +33,7 @@ dependencies:
   easy_localization: ^3.0.7+1
   dio: ^5.8.0+1
   provider: ^6.1.5
+  dartz: ^0.10.1
 
 
 

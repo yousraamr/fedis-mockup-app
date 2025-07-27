@@ -6,24 +6,31 @@ import 'package:fedis_mockup_demo/home/home_presentation/home_pages/home_screen.
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/profile_screen.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/cart_screen.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/fav_screen.dart';
+import 'package:fedis_mockup_demo/auth/presentation/pages/welcome_page.dart';
 
 class CustomRouter {
   static Route<dynamic>? allRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case welcomeScreen:
+        return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case registerScreen:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => const SignUpScreen());
+        return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case loginScreen:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => const SignInScreen());
+        return MaterialPageRoute(builder: (_) => const SignInScreen());
       case homeScreen:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       case profileScreen:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => const ProfileScreen());
+        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case cartScreen:
+        return MaterialPageRoute(builder: (_) => const CartScreen());
+      case favoritesScreen:
+        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
       default:
-        return null;
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text("Route not found")),
+          ),
+        );
     }
   }
 }

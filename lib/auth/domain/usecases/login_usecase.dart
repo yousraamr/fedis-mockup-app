@@ -1,11 +1,12 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/errors/failure.dart';
 import '../repository/auth_repository.dart';
 
 class LoginUseCase {
   final AuthRepository repository;
-
   LoginUseCase(this.repository);
 
-  Future<Map<String, dynamic>> execute(String email, String password) async {
-    return await repository.login(email, password);
+  Future<Either<Failure, Map<String, dynamic>>> execute(String email, String password) {
+    return repository.login(email, password);
   }
 }

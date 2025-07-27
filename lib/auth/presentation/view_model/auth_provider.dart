@@ -1,85 +1,114 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fedis_mockup_demo/auth/domain/usecases/login_usecase.dart';
-import 'package:fedis_mockup_demo/auth/domain/usecases/register_usecase.dart';
+import '../../../core/storage/session_manager.dart';
+import '../../../core/utils/logger.dart';
+import '../../../core/utils/snackbar.dart';
+import '../../domain/usecases/login_usecase.dart';
+import '../../domain/usecases/register_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 
 class AuthProvider with ChangeNotifier {
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
+  final LogoutUseCase logoutUseCase;
 
-  AuthProvider({required this.loginUseCase, required this.registerUseCase});
+  AuthProvider({
+    required this.loginUseCase,
+    required this.registerUseCase,
+    required this.logoutUseCase,
+  });
 
   bool isLoading = false;
   String? userName;
   String? email;
 
-  Future<Map<String, dynamic>?> login(BuildContext context, String email, String password) async {
+  Future<bool> login(BuildContext context, String email, String password) async {
     _setLoading(true);
-    try {
-      final data = await loginUseCase.execute(email, password);
-      print("🔍 Login API Response: $data");
-      _setLoading(false);
+    bool isSuccess = false;
 
-      if (data['accessToken'] != null) {
-        print("✅ Login Successful: ${data['accessToken']} for ${data['user']}");
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', data['accessToken']);
-        await prefs.setString('userName', data['user']['name'] ?? '');
-        await prefs.setString('email', data['user']['email'] ?? '');
+    final result = await loginUseCase.execute(email, password);
 
-        // Update provider state
-        userName = data['user']['name'] ?? '';
-        this.email = data['user']['email'] ?? '';
+    await result.fold<Future<void>>(
+          (failure) async {
+        Logger.error("Login Failed: ${failure.message}");
+        if (context.mounted) showErrorSnackBar(context, failure.message);
+      },
+          (data) async {
+        Logger.success("Login successful");
+        Logger.info("Login API Response: $data");
+
+        final token = data['accessToken'];
+        final user = data['user'];
+
+        // ✅ Handle different formats
+        String? userName;
+        if (user != null) {
+          if (user['name'] != null) {
+            userName = user['name'];
+          } else if (user['firstName'] != null && user['lastName'] != null) {
+            userName = "${user['firstName']} ${user['lastName']}";
+          }
+        }
+        final userEmail = user?['email'];
+
+        if (token == null || userName == null || userEmail == null) {
+          Logger.error("Invalid response: Missing token or user details");
+          if (context.mounted) showErrorSnackBar(context, "Invalid server response");
+          return;
+        }
+
+        await SessionManager.saveSession(token: token, userName: userName, email: userEmail);
+
+        this.userName = userName;
+        this.email = userEmail;
         notifyListeners();
 
-        return data;
-      } else {
-        print("❌ Login Failed - Missing token");
-        return null;
-      }
-    } catch (e) {
-      _setLoading(false);
-      print("❌ Login Error: $e");
-      return null;
-    }
+        Logger.info("User Details: Name=$userName, Email=$userEmail, Token=$token");
+        if (context.mounted) showSuccessSnackBar(context, "Welcome $userName");
+        isSuccess = true;
+      },
+    );
+
+    _setLoading(false);
+    return isSuccess;
   }
 
-
-
-  Future<Map<String, dynamic>?> register(
-      BuildContext context, String name, String email, String password) async {
+  Future<bool> register(BuildContext context, String name, String email, String password) async {
     _setLoading(true);
-    try {
-      final result = await registerUseCase.execute(name, email, password);
-      _setLoading(false);
+    bool isSuccess = false;
 
-      // If we have a token, registration was successful
-      if (result['accessToken'] != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ Registration Successful')),
-        );
-        return result;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('❌ Registration Failed')),
-        );
-        return null;
-      }
-    } catch (e) {
-      _setLoading(false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
-      return null;
-    }
+    final result = await registerUseCase.execute(name, email, password);
+    result.fold(
+          (failure) {
+        Logger.error("Registration Failed: ${failure.message}");
+        showErrorSnackBar(context, failure.message);
+      },
+          (data) {
+        Logger.success("✅ Registration Successful");
+        Logger.info("User Details: Name=$name, Email=$email");
+        showSuccessSnackBar(context, "Registration Successful");
+        isSuccess = true;
+      },
+    );
+    _setLoading(false);
+    return isSuccess;
   }
 
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    userName = null;
-    email = null;
-    notifyListeners();
+
+  Future<void> logout(BuildContext context) async {
+    try {
+      Logger.info("Logging out user: $userName ($email)");
+
+      await logoutUseCase.execute();
+      userName = null;
+      email = null;
+      notifyListeners();
+
+      Logger.success("✅ User logged out successfully");
+      showSuccessSnackBar(context, "Logged out successfully");
+    } catch (e) {
+      Logger.error("Logout Error: $e");
+      showErrorSnackBar(context, "Logout Failed");
+    }
   }
 
   void _setLoading(bool value) {

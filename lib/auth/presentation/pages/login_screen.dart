@@ -6,7 +6,10 @@ import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dar
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/home_screen.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
-import 'package:fedis_mockup_demo/utils/snackbar.dart';
+import 'package:fedis_mockup_demo/core/utils/snackbar.dart';
+import 'package:fedis_mockup_demo/core/utils/logger.dart';
+import 'package:fedis_mockup_demo/core/utils/route_names.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -96,16 +99,19 @@ class _SignInScreenState extends State<SignInScreen> {
                                 showErrorSnackBar(context, 'please_agree'.tr());
                                 return;
                               }
-                              final success = await authProvider.login(
+
+                              print("Login button clicked");
+                              bool success = await authProvider.login(
                                 context,
-                                emailController.text,
-                                passwordController.text,
+                                emailController.text.trim(),
+                                passwordController.text.trim(),
                               );
-                              if (success != null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (_) => const HomeScreen()),
-                                );
+                              print("Login success value: $success");
+
+
+                              if (success && context.mounted) {
+                                Logger.info("Navigating to HomeScreen...");
+                                Navigator.pushReplacementNamed(context, homeScreen);
                               }
                             }
                           },

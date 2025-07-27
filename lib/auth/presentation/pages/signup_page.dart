@@ -5,10 +5,9 @@ import 'package:fedis_mockup_demo/auth/presentation/pages/login_screen.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import '../widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/translations/signup_strings.dart';
-import 'package:fedis_mockup_demo/utils/snackbar.dart';
+import 'package:fedis_mockup_demo/core/utils/snackbar.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
 import 'package:provider/provider.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -26,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return CustomScaffold(
       child: Column(
         children: [
@@ -209,14 +209,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               showSuccessSnackBar(context, 'processing_data'.tr());
 
-                              final result = await authProvider.register(context, name, email, password);
+                              bool success = await authProvider.register(context, name, email, password);
 
-                              if (result != null && result['accessToken'] != null) {
-                                print("✅ REGISTER RESULT: $result");
-                                print("TOKEN: ${result['accessToken']}");
-                                print("USER DETAILS: ${result['user']}");
-
-                                // Navigate to Login Screen
+                              if (success) {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (context) => const SignInScreen()),
@@ -226,9 +221,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               showErrorSnackBar(context, 'please_agree'.tr());
                             }
                           },
-
-
-                          child: Text('sign_up'.tr()),
+                          child: authProvider.isLoading
+                              ? const CircularProgressIndicator()
+                              : Text('sign_up'.tr()),
                         ),
                       ),
                       const SizedBox(
