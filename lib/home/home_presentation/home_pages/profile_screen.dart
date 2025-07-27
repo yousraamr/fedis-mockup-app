@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedis_mockup_demo/core/utils/route_names.dart';
 import 'package:fedis_mockup_demo/core/utils/snackbar.dart';
-
+import 'package:fedis_mockup_demo/core/providers/theme_provider.dart';
 import '../../../themes/theme.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,18 +23,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Confirm Logout"),
-          content: const Text("Are you sure you want to log out?"),
+          title: Text("confirm_logout".tr()),
+          content: Text("logout_question".tr()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text("Cancel"),
+              child: Text("cancel".tr()),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               child: Text(
-                "Logout",
+                "logout".tr(),
                 style: TextStyle(color: lightColorScheme.onPrimary),
               ),
             ),
@@ -54,10 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       await authProvider.logout(context);
       if (!mounted) return;
-      showSuccessSnackBar(context, "Logged out successfully");
+      showSuccessSnackBar(context, "logged_out_successfully".tr());
       Navigator.pushReplacementNamed(context, loginScreen);
     } catch (e) {
-      showErrorSnackBar(context, "Logout failed: ${e.toString()}");
+      showErrorSnackBar(context, "logout_failed".tr(namedArgs: {'error': e.toString()}));
     } finally {
       if (mounted) setState(() => _isLoggingOut = false);
     }
@@ -70,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: Text("profile".tr()),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -88,21 +89,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              authProvider.userName ?? "User",
+              authProvider.userName ?? "user".tr(),
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
             Text(
-              authProvider.email ?? "Not available",
+              authProvider.email ?? "not_available".tr(),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            const SizedBox(height: 40),
+
+            Consumer<ThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.dark_mode, color: Colors.grey),
+                    const SizedBox(width: 10),
+                    Text(
+                      "dark_mode".tr(),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const Spacer(),
+                    Switch(
+                      value: themeProvider.isDarkMode,
+                      onChanged: (value) {
+                        themeProvider.toggleTheme();
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
             const Spacer(),
+
             _isLoggingOut
                 ? const CircularProgressIndicator()
                 : ElevatedButton.icon(
               onPressed: () => _showLogoutDialog(context),
               icon: const Icon(Icons.logout, color: Colors.white),
-              label: const Text("Logout", style: TextStyle(color: Colors.white)),
+              label: Text("logout".tr(), style: const TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 minimumSize: const Size(double.infinity, 50),
