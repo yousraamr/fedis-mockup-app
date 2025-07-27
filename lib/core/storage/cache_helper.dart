@@ -7,19 +7,23 @@ class CacheHelper {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<void> saveData(String key, String value) async {
-    await _prefs?.setString(key, value);
+  static Future<bool> saveData(String key, dynamic value) async {
+    if (value is String) return await _prefs!.setString(key, value);
+    if (value is bool) return await _prefs!.setBool(key, value);
+    if (value is int) return await _prefs!.setInt(key, value);
+    if (value is double) return await _prefs!.setDouble(key, value);
+    return false;
   }
 
-  static String? getData(String key) {
-    return _prefs?.getString(key);
+  static dynamic getData(String key) {
+    return _prefs!.get(key);
   }
 
   static Future<void> removeData(String key) async {
-    await _prefs?.remove(key);
+    await _prefs!.remove(key);
   }
 
   static Future<void> clear() async {
-    await _prefs?.clear();
+    await _prefs!.clear();
   }
 }
