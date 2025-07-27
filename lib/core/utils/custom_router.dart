@@ -7,7 +7,7 @@ import 'package:fedis_mockup_demo/home/home_presentation/home_pages/profile_scre
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/cart_screen.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/fav_screen.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/welcome_page.dart';
-
+import 'package:fedis_mockup_demo/auth/presentation/pages/forget_password.dart';
 class CustomRouter {
   static Route<dynamic>? allRoutes(RouteSettings settings) {
     switch (settings.name) {
@@ -25,6 +25,8 @@ class CustomRouter {
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case favoritesScreen:
         return MaterialPageRoute(builder: (_) => const FavoritesScreen());
+      case forgetPasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ForgetPasswordPage());
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
