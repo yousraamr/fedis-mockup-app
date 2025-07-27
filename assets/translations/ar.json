@@ -21,7 +21,7 @@
   "sign_in": "تسجيل الدخول",
   "processing_data": "جاري معالجة البيانات",
   "please_agree": "يرجى الموافقة على معالجة البيانات الشخصية",
-
+  "enter_valid_email": "ادخل بريد الكتروني صحيح",
 
   "remember_me": "تذكرني",
   "forget_password": "هل نسيت كلمة المرور؟",
@@ -31,5 +31,23 @@
   "home": "الرئيسية",
   "cart": "السلة",
   "favorites": "المفضلة",
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+
+  "hi_user": "مرحبًا، {userName}!",
+  "search_hint": "ابحث عن طعامك أو مطعمك",
+  "get_special_discount": "احصل على خصم خاص",
+  "up_to_discount": "حتى {percent}%",
+  "categories": "الفئات",
+  "restaurant": "المطاعم",
+  "show_all": "عرض الكل",
+  "pizza": "بيتزا",
+
+  "confirm_logout": "تأكيد تسجيل الخروج",
+  "logout_question": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "cancel": "إلغاء",
+  "logout": "تسجيل الخروج",
+  "logged_out_successfully": "تم تسجيل الخروج بنجاح",
+  "logout_failed": "فشل تسجيل الخروج: {error}",
+  "user": "مستخدم",
+  "not_available": "غير متاح"
 }
