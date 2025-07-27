@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/storage/session_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../core/utils/logger.dart';
 import '../../../core/utils/snackbar.dart';
 import '../../domain/usecases/login_usecase.dart';
@@ -30,7 +31,9 @@ class AuthProvider with ChangeNotifier {
     await result.fold<Future<void>>(
           (failure) async {
         Logger.error("Login Failed: ${failure.message}");
-        if (context.mounted) showErrorSnackBar(context, failure.message);
+        if (context.mounted) {
+          showErrorSnackBar(context, failure.message); // Already dynamic
+        }
       },
           (data) async {
         Logger.success("Login successful");
@@ -38,8 +41,8 @@ class AuthProvider with ChangeNotifier {
 
         final token = data['accessToken'];
         final user = data['user'];
+        final apiMessage = data['message'] ?? "Login Successful"; // ✅ Take API message if exists
 
-        // ✅ Handle different formats
         String? userName;
         if (user != null) {
           if (user['name'] != null) {
@@ -63,7 +66,9 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
 
         Logger.info("User Details: Name=$userName, Email=$userEmail, Token=$token");
-        if (context.mounted) showSuccessSnackBar(context, "Welcome $userName");
+        if (context.mounted) {
+          showSuccessSnackBar(context, apiMessage); // ✅ API message shown
+        }
         isSuccess = true;
       },
     );
@@ -84,8 +89,8 @@ class AuthProvider with ChangeNotifier {
       },
           (data) {
         Logger.success("✅ Registration Successful");
-        Logger.info("User Details: Name=$name, Email=$email");
-        showSuccessSnackBar(context, "Registration Successful");
+        final apiMessage = data['message'] ?? "Registration Successful"; // ✅ Use API message
+        showSuccessSnackBar(context, apiMessage);
         isSuccess = true;
       },
     );
@@ -102,6 +107,8 @@ class AuthProvider with ChangeNotifier {
       userName = null;
       email = null;
       notifyListeners();
+
+      await context.setLocale(const Locale('en'));
 
       Logger.success("✅ User logged out successfully");
       showSuccessSnackBar(context, "Logged out successfully");
