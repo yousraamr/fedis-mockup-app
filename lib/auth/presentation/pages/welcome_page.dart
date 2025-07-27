@@ -7,6 +7,7 @@ import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/welcome_button.dart';
 import 'package:fedis_mockup_demo/translations/welcome_page_strings.dart';
+import 'package:fedis_mockup_demo/core/project_widgets/language_toggle_button.dart';
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -15,42 +16,51 @@ class WelcomeScreen extends StatelessWidget {
     return CustomScaffold(
       child: Column(
         children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: LanguageToggleButton(
+              iconColor:  lightColorScheme.onPrimary,
+            ),
+          ),
+
           Flexible(
-              flex: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 40.0,
-                ),
-                child: Center(
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${welcomeBack.tr()}\n',
-                            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                              color: lightColorScheme.onBackground,
-                            ),
+            flex: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 0,
+                horizontal: 40.0,
+              ),
+              child: Center(
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${welcomeBack.tr()}\n',
+                        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          color: lightColorScheme.onBackground,
                         ),
-                         TextSpan(
-                             text: '\n${enterDetails.tr()}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: lightColorScheme.primary,
-                            ))
-                      ],
-                    ),
+                      ),
+                      TextSpan(
+                        text: '\n${enterDetails.tr()}',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: lightColorScheme.primary,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
           Flexible(
             flex: 1,
             child: Align(
               alignment: Alignment.bottomRight,
               child: Row(
                 children: [
-                   Expanded(
+                  Expanded(
                     child: WelcomeButton(
                       buttonText: login.tr(),
                       onTap: const SignInScreen(),
