@@ -5,6 +5,8 @@ import 'package:fedis_mockup_demo/auth/presentation/pages/signup_page.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_pages/home_screen.dart';
+import 'package:fedis_mockup_demo/core/storage/cache_helper.dart';
+import 'package:fedis_mockup_demo/core/providers/theme_provider.dart';
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/core/utils/snackbar.dart';
 import 'package:fedis_mockup_demo/core/utils/logger.dart';
@@ -24,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +58,33 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 40),
                       TextFormField(
                         controller: emailController,
-                        validator: (value) =>
-                        value == null || value.isEmpty ? 'please_enter_email'.tr() : null,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'please_enter_email'.tr();
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'enter_valid_email'.tr();
+                          }
+                          return null;
+                        },
                         decoration: _inputDecoration('email'.tr(), 'enter_email'.tr()),
                       ),
                       const SizedBox(height: 25),
                       TextFormField(
                         controller: passwordController,
-                        obscureText: true,
+                        obscureText: _obscurePassword,
                         validator: (value) =>
                         value == null || value.isEmpty ? 'please_enter_password'.tr() : null,
-                        decoration: _inputDecoration('password'.tr(), 'enter_password'.tr()),
+                        decoration: InputDecoration(
+                          labelText: 'password'.tr(),
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () => setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            }),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 25),
                       Row(
@@ -83,9 +102,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           GestureDetector(
-                            child: Text('forget_password'.tr(),
-                                style: Theme.of(context).textTheme.bodyMedium!
-                                    .copyWith(color: lightColorScheme.primary)),
+                            onTap: () {
+                              Navigator.pushNamed(context, forgetPasswordScreen);
+                            },
+                            child: Text(
+                              'forget_password'.tr(),
+                              style: Theme.of(context).textTheme.bodyMedium!
+                                  .copyWith(color: lightColorScheme.primary),
+                            ),
                           ),
                         ],
                       ),
@@ -101,6 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
 
                               print("Login button clicked");
+
                               bool success = await authProvider.login(
                                 context,
                                 emailController.text.trim(),
@@ -108,8 +133,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                               print("Login success value: $success");
 
-
                               if (success && context.mounted) {
+                                final themeProvider = context.read<ThemeProvider>();
+                                themeProvider.updateUser(authProvider.email ?? "guest");
+
+                                final savedLanguageCode = CacheHelper.getData('userLanguage_${authProvider.email}') ?? 'ar';
+                                await context.setLocale(Locale(savedLanguageCode));
+
                                 Logger.info("Navigating to HomeScreen...");
                                 Navigator.pushReplacementNamed(context, homeScreen);
                               }
@@ -129,11 +159,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           Text('dont_have_account'.tr(),
                               style: TextStyle(color: lightColorScheme.onBackground)),
                           GestureDetector(
-                            onTap: () => Navigator.push(
+                            onTap: () => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (_) => const SignUpScreen()),
                             ),
-                            child: Text('sign_up'.tr(),
+                              child: Text('sign_up'.tr(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
