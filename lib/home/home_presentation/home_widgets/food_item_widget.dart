@@ -1,58 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:fedis_mockup_demo/themes/theme.dart';
 
-class FoodItemWidget extends StatelessWidget {
-  const FoodItemWidget({super.key});
+class ServiceItemWidget extends StatelessWidget {
+  final String title;
+  final String description;
+  final String imageUrl;
+
+  const ServiceItemWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Material(
-        elevation: 2,
-        color: lightColorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: lightColorScheme.onPrimary,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  "assets/images/BK.jpeg",
-                  height: 80,
+    return InkWell(
+      onTap: (){
+        print('FFFF${description}');
+      },
+      child: Card(
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
                   width: 80,
-                  fit: BoxFit.cover,
+                  height: 80,
+                  color: Colors.grey.shade200,
+                  child: const Icon(Icons.image_not_supported, color: Colors.grey),
                 ),
               ),
-              const SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Burger King", style: Theme.of(context).textTheme.bodyLarge),
-                  Row(
-                    children: const [
-                      Icon(Icons.star_rate, color: Colors.yellowAccent, size: 16),
-                      SizedBox(width: 4),
-                      Text("5.0"),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(Icons.timer, color: lightColorScheme.outlineVariant, size: 16),
-                      Text("20-25 mins  • 7 km"),
-                    ],
-                  )
+                  Text(title,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const SizedBox(height: 4),
+                  Text(description,
+                      style: const TextStyle(color: Colors.grey, fontSize: 14),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
