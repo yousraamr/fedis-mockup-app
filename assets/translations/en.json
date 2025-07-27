@@ -21,7 +21,7 @@
   "sign_in": "Sign in",
   "processing_data": "Processing Data",
   "please_agree": "Please agree to the processing of personal data",
-
+  "enter_valid_email": "Please enter valid email",
 
   "remember_me": "Remember me",
   "forget_password": "Forget password?",
@@ -31,5 +31,23 @@
   "home": "Home",
   "cart": "Cart",
   "favorites": "Favorites",
-  "profile": "Profile"
+  "profile": "Profile",
+
+  "hi_user": "Hi, {userName}!",
+  "search_hint": "Search Your Food or Restaurant",
+  "get_special_discount": "Get Special Discount",
+  "up_to_discount": "up to {percent}%",
+  "categories": "Categories",
+  "restaurant": "Restaurant",
+  "show_all": "Show all",
+  "pizza": "Pizza",
+
+  "confirm_logout": "Confirm Logout",
+  "logout_question": "Are you sure you want to log out?",
+  "cancel": "Cancel",
+  "logout": "Logout",
+  "logged_out_successfully": "Logged out successfully",
+  "logout_failed": "Logout failed: {error}",
+  "user": "User",
+  "not_available": "Not available"
 }
