@@ -16,14 +16,15 @@ class AuthDataSource {
       });
 
       if (response.statusCode == 200) {
-        Logger.success("Login successful");
+        Logger.success("✅ Login successful");
         return response.data;
       } else {
         throw ServerException(message: "Login failed");
       }
     } on DioException catch (e) {
-      Logger.error("Login API Error: ${e.response?.data}");
-      throw ServerException(message: e.response?.data['message'] ?? "Server Error");
+      final errorMessage = _extractErrorMessage(e.response?.data);
+      Logger.error("❌ Login API Error: $errorMessage");
+      throw ServerException(message: errorMessage);
     }
   }
 
@@ -36,14 +37,25 @@ class AuthDataSource {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Logger.success("Registration successful");
+        Logger.success("✅ Registration successful");
         return response.data;
       } else {
         throw ServerException(message: "Registration failed");
       }
     } on DioException catch (e) {
-      Logger.error("Register API Error: ${e.response?.data}");
-      throw ServerException(message: e.response?.data['message'] ?? "Server Error");
+      final errorMessage = _extractErrorMessage(e.response?.data);
+      Logger.error("❌ Register API Error: $errorMessage");
+      throw ServerException(message: errorMessage);
     }
+  }
+
+  String _extractErrorMessage(dynamic data) {
+    if (data == null) return "Unknown error occurred";
+    if (data is String) return data; // API returned plain text
+    if (data is Map<String, dynamic>) {
+      if (data.containsKey('message')) return data['message'];
+      if (data.containsKey('error')) return data['error'];
+    }
+    return "Something went wrong";
   }
 }
