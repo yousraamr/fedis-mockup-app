@@ -49,5 +49,17 @@
   "logged_out_successfully": "تم تسجيل الخروج بنجاح",
   "logout_failed": "فشل تسجيل الخروج: {error}",
   "user": "مستخدم",
-  "not_available": "غير متاح"
+  "not_available": "غير متاح",
+
+  "error_incorrect_password": "كلمة المرور غير صحيحة",
+  "error_invalid_email": "البريد الإلكتروني غير صحيح",
+  "error_user_not_found": "المستخدم غير موجود",
+  "error_server": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+  "error_email_exists": "البريد الإلكتروني موجود بالفعل",
+  "login_success": "تم تسجيل الدخول بنجاح",
+  "registration_success": "تم التسجيل بنجاح",
+  "invalid_server_response": "استجابة الخادم غير صالحة",
+
+  "services": "الخدمات",
+  "dark_mode": "الوضع الداكن"
 }
