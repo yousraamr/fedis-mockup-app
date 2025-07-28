@@ -13,7 +13,7 @@ import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/card_butto
 import 'package:fedis_mockup_demo/home/home_presentation/home_view_model/nav_provider.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
 import 'package:fedis_mockup_demo/core/project_widgets/language_toggle_button.dart';
-import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/food_item_widget.dart';
+import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/ServiceItemWidget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

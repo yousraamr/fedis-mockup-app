@@ -1,144 +1,62 @@
 {
   "services": [
     {
-      "serviceName": "service 1",
+      "serviceName": "Register",
       "serviceLink": "https://fedis.com.eg/",
       "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/512px-Google_2015_logo.svg.png",
       "formData": [
         {
-          "stepTitle": "Step 1/2",
-          "label": "Enter order information",
+          "stepTitle": "Register",
+          "label": "Let's get you signed up!",
           "type": "description"
         },
         {
-          "label": "Name of applicant",
+          "label": "Full Name",
           "type": "text",
-          "id": "name",
-          "name": "name",
-          "readOnly": true,
-          "lg": 6,
-          "md": 6,
-          "dataFromKey": "nextStepData.fullName",
-          "condition": "response.responseCode,==,'200'"
+          "id": "fullname",
+          "name": "fullname",
+          "readOnly": false,
+          "required": true,
+          "validationMessage": "Full Name is required.",
+          "lg": 12,
+          "md": 12
         },
         {
-          "label": "National number",
-          "type": "number",
-          "id": "nid",
-          "name": "nid",
-          "readOnly": true,
-          "lg": 6,
-          "md": 6,
-          "dataFromKey": "nextStepData.nid",
-          "condition": "response.responseCode,==,'200'"
-        },
-
-        {
-
-          "label": "Mobile number",
-          "type": "number",
-          "id": "phoneNumber",
-          "name": "phoneNumber",
-          "condition": "response.responseCode,==,'200'",
-          "dataFromKey": "phoneNumber",
-          "readOnly": true,
-          "minLength": 11,
-          "maxLength": 11,
-          "lg": 6,
-          "md": 6
+          "label": "Email",
+          "type": "email",
+          "id": "email",
+          "name": "email",
+          "readOnly": false,
+          "required": true,
+          "validationMessage": "Please enter a valid email.",
+          "regex": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+          "lg": 12,
+          "md": 12
         },
         {
-          "id": "submition",
+          "label": "Password",
+          "type": "password",
+          "id": "password",
+          "name": "password",
+          "readOnly": false,
+          "required": true,
+          "minLength": 6,
+          "validationMessage": "Password must be at least 6 characters.",
+          "lg": 12,
+          "md": 12
+        },
+        {
+          "id": "submitButton",
           "type": "button",
-          "name": "next",
+          "name": "Register",
+          "label": "Sign Up",
           "lg": 12,
           "color": "success",
-          "condition": "response.responseCode,==,'200'",
           "action": "submit",
           "arrow": true,
           "bottom": true
         }
       ]
-    },
-    {
-      "serviceName": "service 2",
-      "serviceLink": "https://www.linkedin.com/feed/",
-      "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/512px-LinkedIn_logo_initials.png",
-      "formData": [
-        {
-          "stepTitle": "Test",
-          "label": "Enter order information",
-          "type": "description"
-        },
-        {
-          "label": "Name of applicant",
-          "type": "text",
-          "id": "name",
-          "name": "name",
-          "readOnly": true,
-          "lg": 6,
-          "md": 6,
-          "dataFromKey": "nextStepData.fullName",
-          "condition": "response.responseCode,==,'200'"
-        },
-        {
-          "label": "National number",
-          "type": "number",
-          "id": "nid",
-          "name": "nid",
-          "readOnly": true,
-          "lg": 6,
-          "md": 6,
-          "dataFromKey": "nextStepData.nid",
-          "condition": "response.responseCode,==,'200'"
-        },
-
-        {
-
-          "label": "Mobile number",
-          "type": "number",
-          "id": "phoneNumber",
-          "name": "phoneNumber",
-          "condition": "response.responseCode,==,'200'",
-          "dataFromKey": "phoneNumber",
-          "readOnly": true,
-          "minLength": 11,
-          "maxLength": 11,
-          "lg": 6,
-          "md": 6
-        },
-        {
-          "id": "submition",
-          "type": "button",
-          "name": "next",
-          "lg": 12,
-          "color": "success",
-          "condition": "response.responseCode,==,'200'",
-          "action": "submit",
-          "arrow": true,
-          "bottom": true
-        }
-      ]
-    },
-    {
-      "serviceName": "service 3",
-      "serviceLink": "https://github.com/",
-      "serviceImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-    },
-    {
-      "serviceName": "service 4",
-      "serviceLink": "https://openai.com/index/chatgpt/",
-      "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/512px-ChatGPT-Logo.svg.png"
-    },
-    {
-      "serviceName": "service 5",
-      "serviceLink": "https://youtube.com/",
-      "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/512px-YouTube_Logo_2017.svg.png"
-    },
-    {
-      "serviceName": "service 6",
-      "serviceLink": "https://www.udemy.com/",
-      "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Udemy_logo.svg/512px-Udemy_logo.svg.png"
     }
   ]
 }
