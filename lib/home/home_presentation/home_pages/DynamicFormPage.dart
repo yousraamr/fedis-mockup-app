@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedis_mockup_demo/home/home_data/models/form_field_data.dart';
+
+import '../../../auth/data/datasource/auth_datasourse.dart';
+import '../../../core/utils/snackbar.dart';
 
 class DynamicFormPage extends StatefulWidget {
   final List<FormFieldData> formData;
@@ -111,22 +115,30 @@ class _DynamicFormPageState extends State<DynamicFormPage> {
       case 'button':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: ElevatedButton.icon(
-            onPressed: () {
+          child: ElevatedButton(
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('form_submitted'.tr())),
-                );
+                final formData = <String, String>{};
+                _controllers.forEach((key, controller) {
+                  formData[key] = controller.text.trim();
+                });
+
+                try {
+                  final response = await Dio().post(
+                    'https://cartverse-data.onrender.com/register',
+                    data: formData,
+                  );
+
+                  showSuccessSnackBar(context, '✅ Registered Successfully');
+                  print('Response: ${response.data}');
+                } catch (e) {
+                  showErrorSnackBar(context, '❌ ${e.toString()}');
+                }
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Please fix the errors and try again.')),
-                );
+                showErrorSnackBar(context, '❌ Please fix the errors and try again.');
               }
             },
-            icon: field.arrow == true
-                ? const Icon(Icons.arrow_forward)
-                : const SizedBox(),
-            label: Text(field.name?.tr() ?? 'Submit'.tr()),
+            child: Text(field.label?.tr() ?? 'Submit'),
           ),
         );
 
