@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fedis_mockup_demo/home/home_data/models/ServicesDataModel.dart';
-
 import '../../home_data/home_datasource/home_datasource.dart';
 
 
@@ -9,11 +8,11 @@ class HomeProvider with ChangeNotifier {
 
   HomeProvider({required this.homeDataSource});
 
-  List<ProductDataModel> _services = [];
+  List<Service> _services = [];
   bool _isLoading = false;
   String? _errorMessage;
 
-  List<ProductDataModel> get services => _services;
+  List<Service> get services => _services;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -23,7 +22,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _services = await homeDataSource.readJsonData();
+      _services = await HomeDataSource.loadServices();
     } catch (error) {
       _errorMessage = error.toString();
     } finally {
