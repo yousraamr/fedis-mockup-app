@@ -63,5 +63,15 @@
   "invalid_server_response": "Invalid server response",
 
   "services": "Services",
-  "dark_mode": "Dark Mode"
+  "dark_mode": "Dark Mode",
+
+  "form_title": "Service Form",
+  "Enter order information": "Enter order information",
+  "Name of applicant": "Name of applicant",
+  "National number": "National number",
+  "Mobile number": "Mobile number",
+  "Submit": "Submit",
+  "form_submitted": "Form submitted successfully",
+  "Step 1/2": "Step 1/2",
+  "next": "Next"
 }
