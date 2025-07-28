@@ -1,25 +1,17 @@
-class ProductDataModel {
-  String? serviceName;
-  String? serviceLink;
-  String? serviceImage;
+import 'form_field_data.dart';
 
-  ProductDataModel({
-    this.serviceName,
-    this.serviceLink,
-    this.serviceImage
-  });
+class Service {
+  final String? serviceName;
+  final String? serviceLink;
+  final String? serviceImage;
+  final List<FormFieldData>? formData;
 
-  ProductDataModel.fromJson(Map<String, dynamic> json) {
-    serviceName = json['serviceName'];
-    serviceLink = json['serviceLink'];
-    serviceImage = json['serviceImage'];
-  }
+  Service({this.serviceName, this.serviceLink, this.serviceImage, this.formData});
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['serviceName'] = this.serviceName;
-    data['serviceLink'] = this.serviceLink;
-    data['serviceImage'] = this.serviceImage;
-    return data;
-  }
+  factory Service.fromJson(Map<String, dynamic> json) => Service(
+    serviceName: json['serviceName'],
+    serviceLink: json['serviceLink'],
+    serviceImage: json['serviceImage'],
+    formData: (json['formData'] as List?)?.map((e) => FormFieldData.fromJson(e)).toList(),
+  );
 }
