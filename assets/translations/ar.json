@@ -61,5 +61,15 @@
   "invalid_server_response": "استجابة الخادم غير صالحة",
 
   "services": "الخدمات",
-  "dark_mode": "الوضع الداكن"
+  "dark_mode": "الوضع الداكن",
+
+  "form_title": "نموذج الخدمة",
+  "Enter order information": "أدخل معلومات الطلب",
+  "Name of applicant": "اسم مقدم الطلب",
+  "National number": "الرقم القومي",
+  "Mobile number": "رقم الهاتف المحمول",
+  "Submit": "إرسال",
+  "form_submitted": "تم إرسال النموذج بنجاح",
+  "Step 1/2": "الخطوة 1 من 2",
+  "next": "التالي"
 }
