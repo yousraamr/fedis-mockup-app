@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fedis_mockup_demo/core/utils/url_launcher_helper.dart';
 
 class ServiceItemWidget extends StatelessWidget {
   final String title;
@@ -16,7 +18,7 @@ class ServiceItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        print('FFFF${description}');
+        openLink(description);
       },
       child: Card(
         child: Row(
