@@ -235,6 +235,7 @@ class ServiceItemWidget extends StatelessWidget {
 }
 */
 
+import 'package:fedis_mockup_demo/home/home_presentation/home_pages/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -250,6 +251,9 @@ import 'package:fedis_mockup_demo/home/home_presentation/home_pages/DynamicFormP
 import 'package:fedis_mockup_demo/home/home_presentation/home_view_model/nav_provider.dart';
 import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/custom_text.dart';
 
+import 'cart_screen.dart';
+import 'fav_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -259,9 +263,9 @@ class HomeScreen extends StatelessWidget {
 
     final List<Widget> pages = [
       const HomePageContent(),
-      const Center(child: Text("Cart Page")),
-      const Center(child: Text("Favorites Page")),
-      const Center(child: Text("Profile Page")),
+      const CartScreen(),
+      const FavoritesScreen(),
+      const ProfileScreen(),
     ];
 
     return Scaffold(
