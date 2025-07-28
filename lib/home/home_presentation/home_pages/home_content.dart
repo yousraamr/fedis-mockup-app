@@ -51,7 +51,7 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   void initState() {
     super.initState();
-    // ✅ Fetch JSON services on page load
+    // Fetch JSON services on page load
     Future.microtask(() {
       Provider.of<HomeProvider>(context, listen: false).fetchServices();
     });
@@ -92,7 +92,7 @@ class _HomePageContentState extends State<HomePageContent> {
           _buildSectionHeader(context, tr('services')),
           const SizedBox(height: 10),
 
-          // ✅ Dynamic Services List
+          // Dynamic Services List
           Expanded(
             child: Consumer<HomeProvider>(
               builder: (context, homeProvider, _) {
