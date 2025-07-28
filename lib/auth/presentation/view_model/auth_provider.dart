@@ -48,16 +48,26 @@ class AuthProvider with ChangeNotifier {
         final user = data['user'];
         final apiMessage = data['message'] ?? "Login Successful";
 
-        String? userName;
+        /*String? userName;
         if (user != null) {
           if (user['name'] != null) {
             userName = user['name'];
           } else if (user['firstName'] != null && user['lastName'] != null) {
             userName = "${user['firstName']} ${user['lastName']}";
           }
+        }*/
+        String? userName;
+        if (user != null) {
+          if (user['name'] != null) {
+            userName = user['name'];
+          } else if (user['fullname'] != null) {
+            userName = user['fullname'];
+          } else if (user['firstName'] != null && user['lastName'] != null) {
+            userName = "${user['firstName']} ${user['lastName']}";
+          }
         }
-        final userEmail = user?['email'];
 
+        final userEmail = user?['email'];
         if (token == null || userName == null || userEmail == null) {
           Logger.error("Invalid response: Missing token or user details");
           if (context.mounted) showErrorSnackBar(context, "invalid_server_response".tr());
