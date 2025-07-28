@@ -16,6 +16,10 @@ class FormFieldData {
   final bool? bottom;
   final String? color;
 
+  final bool? required;
+  final String? validationMessage;
+  final String? regex;
+
   FormFieldData({
     this.id,
     this.label,
@@ -33,6 +37,10 @@ class FormFieldData {
     this.arrow,
     this.bottom,
     this.color,
+
+    this.required,
+    this.validationMessage,
+    this.regex,
   });
 
   factory FormFieldData.fromJson(Map<String, dynamic> json) => FormFieldData(
@@ -52,5 +60,9 @@ class FormFieldData {
     arrow: json['arrow'],
     bottom: json['bottom'],
     color: json['color'],
+
+    required: json['required'],
+    validationMessage: json['validationMessage'],
+    regex: json['regex'],
   );
 }
