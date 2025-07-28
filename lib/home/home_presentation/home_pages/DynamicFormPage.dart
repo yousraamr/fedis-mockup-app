@@ -21,35 +21,45 @@ class DynamicFormPage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildField(BuildContext context, FormFieldData field) {
     switch (field.type) {
-    case 'description':
-    return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    if (field.stepTitle != null)
-    Text(field.stepTitle!.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-    if (field.label != null)
-    Text(field.label!.tr()),
-    ],
-    ),
-    );
-    case 'text':
-    case 'number':
-    return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: TextFormField(
-    readOnly: field.readOnly ?? false,
-    keyboardType: field.type == 'number' ? TextInputType.number : TextInputType.text,
-    decoration: InputDecoration(
-    labelText: field.label?.tr(),
-    border: const OutlineInputBorder(),
-    ),
-    maxLength: field.maxLength,
-    ),
-    );
+      case 'description':
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (field.stepTitle != null)
+                Text(field.stepTitle!.tr(),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+              if (field.label != null) Text(field.label!.tr()),
+            ],
+          ),
+        );
+
+      case 'text':
+      case 'number':
+      case 'email':
+      case 'password':
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextFormField(
+            readOnly: field.readOnly ?? false,
+            obscureText: field.type == 'password',
+            keyboardType: field.type == 'number'
+                ? TextInputType.number
+                : (field.type == 'email'
+                ? TextInputType.emailAddress
+                : TextInputType.text),
+            decoration: InputDecoration(
+              labelText: field.label?.tr(),
+              border: const OutlineInputBorder(),
+            ),
+            maxLength: field.maxLength,
+          ),
+        );
+
       case 'button':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -60,10 +70,13 @@ class DynamicFormPage extends StatelessWidget {
                 SnackBar(content: Text('form_submitted'.tr())),
               );
             },
-            icon: field.arrow == true ? const Icon(Icons.arrow_forward) : const SizedBox(),
+            icon: field.arrow == true
+                ? const Icon(Icons.arrow_forward)
+                : const SizedBox(),
             label: Text(field.name?.tr() ?? 'Submit'.tr()),
           ),
         );
+
       default:
         return const SizedBox.shrink();
     }
