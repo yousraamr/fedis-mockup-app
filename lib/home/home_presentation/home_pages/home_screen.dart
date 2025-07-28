@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../home_view_model/home_provider.dart';
-import '../home_widgets/food_item_widget.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
 import 'profile_screen.dart';
@@ -14,7 +14,6 @@ import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/card_butto
 import 'package:fedis_mockup_demo/home/home_presentation/home_view_model/nav_provider.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
 import 'package:fedis_mockup_demo/core/project_widgets/language_toggle_button.dart';
-import 'package:fedis_mockup_demo/home/home_presentation/home_widgets/food_item_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -61,7 +60,7 @@ class _HomePageContentState extends State<HomePageContent> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,31 +91,31 @@ class _HomePageContentState extends State<HomePageContent> {
           _buildSectionHeader(context, tr('services')),
           const SizedBox(height: 10),
 
-          Expanded(
-            child: Consumer<HomeProvider>(
-              builder: (context, homeProvider, _) {
-                if (homeProvider.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (homeProvider.errorMessage != null) {
-                  return Center(child: Text(homeProvider.errorMessage!));
-                } else if (homeProvider.services.isEmpty) {
-                  return const Center(child: Text("No services available"));
-                } else {
-                  return ListView.separated(
-                    itemCount: homeProvider.services.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      final service = homeProvider.services[index];
-                      return ServiceItemWidget(
-                        title: service.serviceName ?? 'No Name',
-                        description: service.serviceLink ?? 'No Description',
-                        imageUrl: service.serviceImage ?? '',
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+          Consumer<HomeProvider>(
+            builder: (context, homeProvider, _) {
+              if (homeProvider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (homeProvider.errorMessage != null) {
+                return Center(child: Text(homeProvider.errorMessage!));
+              } else if (homeProvider.services.isEmpty) {
+                return const Center(child: Text("No services available"));
+              } else {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: homeProvider.services.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final service = homeProvider.services[index];
+                    return ServiceItemWidget(
+                      title: service.serviceName ?? 'No Name',
+                      url: service.serviceLink ?? '',
+                      imageUrl: service.serviceImage ?? '',
+                    );
+                  },
+                );
+              }
+            },
           ),
         ],
       ),
@@ -175,6 +174,61 @@ class _HomePageContentState extends State<HomePageContent> {
                 )),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ServiceItemWidget extends StatelessWidget {
+  final String title;
+  final String url;
+  final String imageUrl;
+
+  const ServiceItemWidget({
+    super.key,
+    required this.title,
+    required this.url,
+    required this.imageUrl,
+  });
+
+  Future<void> _openLink(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint('Could not launch $url');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _openLink(url),
+      child: Card(
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey.shade200,
+                  child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(title,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            ),
+          ],
+        ),
       ),
     );
   }
