@@ -2,22 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedis_mockup_demo/home/home_data/models/form_field_data.dart';
 
-class DynamicFormPage extends StatelessWidget {
+class DynamicFormPage extends StatefulWidget {
   final List<FormFieldData> formData;
 
   const DynamicFormPage({Key? key, required this.formData}) : super(key: key);
 
   @override
+  _DynamicFormPageState createState() => _DynamicFormPageState();
+}
+
+class _DynamicFormPageState extends State<DynamicFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  final Map<String, TextEditingController> _controllers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var field in widget.formData) {
+      if (field.type != 'button' && field.id != null) {
+        _controllers[field.id!] = TextEditingController();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('form_title'.tr())),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: formData.length,
-        itemBuilder: (context, index) {
-          final field = formData[index];
-          return _buildField(context, field);
-        },
+      body: Form(
+        key: _formKey,
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: widget.formData.length,
+          itemBuilder: (context, index) {
+            final field = widget.formData[index];
+            return _buildField(context, field);
+          },
+        ),
       ),
     );
   }
@@ -31,8 +60,7 @@ class DynamicFormPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (field.stepTitle != null)
-                Text(field.stepTitle!.tr(),
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(field.stepTitle!.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
               if (field.label != null) Text(field.label!.tr()),
             ],
           ),
@@ -42,9 +70,11 @@ class DynamicFormPage extends StatelessWidget {
       case 'number':
       case 'email':
       case 'password':
+        final controller = _controllers[field.id]!;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
+            controller: controller,
             readOnly: field.readOnly ?? false,
             obscureText: field.type == 'password',
             keyboardType: field.type == 'number'
@@ -57,6 +87,24 @@ class DynamicFormPage extends StatelessWidget {
               border: const OutlineInputBorder(),
             ),
             maxLength: field.maxLength,
+            validator: (value) {
+              if ((field.required ?? false) && (value == null || value.trim().isEmpty)) {
+                return field.validationMessage ?? 'This field is required.';
+              }
+
+              if (field.minLength != null && (value?.length ?? 0) < field.minLength!) {
+                return field.validationMessage ?? 'Minimum length is ${field.minLength}.';
+              }
+
+              if (field.type == 'email' && field.regex != null) {
+                final regex = RegExp(field.regex!);
+                if (!regex.hasMatch(value ?? '')) {
+                  return field.validationMessage ?? 'Invalid email format.';
+                }
+              }
+
+              return null;
+            },
           ),
         );
 
@@ -65,10 +113,15 @@ class DynamicFormPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: ElevatedButton.icon(
             onPressed: () {
-              // Add submit action
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('form_submitted'.tr())),
-              );
+              if (_formKey.currentState!.validate()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('form_submitted'.tr())),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please fix the errors and try again.')),
+                );
+              }
             },
             icon: field.arrow == true
                 ? const Icon(Icons.arrow_forward)
