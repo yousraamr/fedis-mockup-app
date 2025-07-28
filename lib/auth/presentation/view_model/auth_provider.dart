@@ -5,6 +5,7 @@ import '../../../core/storage/session_manager.dart';
 import '../../../core/utils/error_mapper.dart';
 import '../../../core/utils/logger.dart';
 import '../../../core/utils/snackbar.dart';
+import '../../../translations/signup_strings.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
@@ -24,7 +25,7 @@ class AuthProvider with ChangeNotifier {
   String? userName;
   String? email;
 
-  /// ✅ LOGIN
+  /// LOGIN
   Future<bool> login(BuildContext context, String email, String password) async {
     _setLoading(true);
     bool isSuccess = false;
@@ -69,11 +70,11 @@ class AuthProvider with ChangeNotifier {
         this.email = userEmail;
         notifyListeners();
 
-        /// ✅ Show user details in console
+        /// Show user details in console
         Logger.info("User Details after login: Name=$userName, Email=$userEmail, Token=$token");
 
         if (context.mounted) {
-          showSuccessSnackBar(context, loginSuccess.tr()); // ✅ Direct API message for success
+          showSuccessSnackBar(context, loginSuccess.tr()); //Direct API message for success
         }
         isSuccess = true;
       },
@@ -83,7 +84,7 @@ class AuthProvider with ChangeNotifier {
     return isSuccess;
   }
 
-  /// ✅ REGISTER
+  /// REGISTER
   Future<bool> register(BuildContext context, String name, String email, String password) async {
     _setLoading(true);
     bool isSuccess = false;
@@ -101,11 +102,11 @@ class AuthProvider with ChangeNotifier {
         Logger.success("✅ Registration Successful");
         final apiMessage = data['message'] ?? "Registration Successful";
 
-        /// ✅ Log user details in console
+        /// Log user details in console
         Logger.info("New User Registered: Name=$name, Email=$email");
 
         if (context.mounted) {
-          showSuccessSnackBar(context, apiMessage); // ✅ Direct API message for success
+          showSuccessSnackBar(context, registrationSuccess.tr()); //Direct API message for success
         }
         isSuccess = true;
       },
@@ -114,7 +115,7 @@ class AuthProvider with ChangeNotifier {
     return isSuccess;
   }
 
-  /// ✅ LOGOUT
+  /// LOGOUT
   Future<void> logout(BuildContext context) async {
     try {
       Logger.info("Logging out user: $userName ($email)");
