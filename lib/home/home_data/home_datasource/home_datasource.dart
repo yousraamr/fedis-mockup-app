@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:fedis_mockup_demo/home/home_data/models/ServicesDataModel.dart';
+import '../models/ServicesDataModel.dart';
 import 'package:flutter/services.dart' as rootBundle;
 
 class HomeDataSource {
@@ -8,7 +8,7 @@ class HomeDataSource {
 
   HomeDataSource(this.dio);
 
-  Future<List<ProductDataModel>> readJsonData() async {
+  /*Future<List<ProductDataModel>> readJsonData() async {
     // Load JSON string from assets
     final jsonString = await rootBundle.rootBundle.loadString('assets/services/services.json');
 
@@ -20,6 +20,17 @@ class HomeDataSource {
 
     // Convert each item to ProductDataModel
     return jsonList.map((e) => ProductDataModel.fromJson(e)).toList();
-  }
+  }*/
 
+  static Future<List<Service>> loadServices() async {
+    //Reads the JSON file
+    final jsonString = await rootBundle.rootBundle.loadString('assets/services/services.json');
+    //Parses it to a Dart map
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    //Extracts the services list & Maps it to a List<Service>
+    final services = (jsonData['services'] as List)
+        .map((e) => Service.fromJson(e))
+        .toList();
+    return services;
+  }
 }
