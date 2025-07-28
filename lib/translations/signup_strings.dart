@@ -16,3 +16,4 @@ const String alreadyHaveAccount = 'already_have_account';
 const String signIn = 'sign_in';
 const String processingData = 'processing_data';
 const String pleaseAgree = 'please_agree';
+const String registrationSuccess = 'registration_success';
