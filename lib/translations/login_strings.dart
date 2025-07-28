@@ -13,3 +13,4 @@ const String dontHaveAccount = 'dont_have_account';
 const String signUp = 'sign_up';
 const String processingData = 'processing_data';
 const String pleaseAgree = 'please_agree';
+const String loginSuccess = 'login_success';
