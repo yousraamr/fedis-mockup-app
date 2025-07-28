@@ -23,6 +23,7 @@
   "please_agree": "Please agree to the processing of personal data",
   "enter_valid_email": "Please enter valid email",
 
+
   "remember_me": "Remember me",
   "forget_password": "Forget password?",
   "sign_in_with": "Sign in with",
@@ -49,5 +50,18 @@
   "logged_out_successfully": "Logged out successfully",
   "logout_failed": "Logout failed: {error}",
   "user": "User",
-  "not_available": "Not available"
+  "not_available": "Not available",
+
+  "error_incorrect_password": "Incorrect password",
+  "error_invalid_email": "Invalid email",
+  "error_user_not_found": "User not found",
+  "error_server": "Something went wrong, please try again",
+  "error_email_exists": "Email already exists",
+
+  "login_success": "Login Successful",
+  "registration_success": "Registration Successful",
+  "invalid_server_response": "Invalid server response",
+
+  "services": "Services",
+  "dark_mode": "Dark Mode"
 }
