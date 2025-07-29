@@ -93,20 +93,20 @@ class _DynamicFormPageState extends State<DynamicFormPage> {
             maxLength: field.maxLength,
             validator: (value) {
               if ((field.required ?? false) && (value == null || value.trim().isEmpty)) {
-                return field.validationMessage ?? 'This field is required.';
+                return field.validationMessage?.tr() ?? 'please_enter_${field.id}'.tr();
               }
 
               if (field.minLength != null && (value?.length ?? 0) < field.minLength!) {
-                return field.validationMessage ?? 'Minimum length is ${field.minLength}.';
+                return field.validationMessage?.tr() ??
+                    tr('minimum_length', args: [field.minLength.toString()]);
               }
 
               if (field.type == 'email' && field.regex != null) {
                 final regex = RegExp(field.regex!);
                 if (!regex.hasMatch(value ?? '')) {
-                  return field.validationMessage ?? 'Invalid email format.';
+                  return field.validationMessage?.tr() ?? 'enter_valid_email'.tr();
                 }
               }
-
               return null;
             },
           ),
@@ -129,16 +129,16 @@ class _DynamicFormPageState extends State<DynamicFormPage> {
                     data: formData,
                   );
 
-                  showSuccessSnackBar(context, '✅ Registered Successfully');
+                  showSuccessSnackBar(context, 'registration_success'.tr());
                   print('Response: ${response.data}');
                 } catch (e) {
-                  showErrorSnackBar(context, '❌ ${e.toString()}');
+                  showErrorSnackBar(context, '${'error_server'.tr()}: ${e.toString()}');
                 }
               } else {
-                showErrorSnackBar(context, '❌ Please fix the errors and try again.');
+                showErrorSnackBar(context, 'please_fix_errors'.tr());
               }
             },
-            child: Text(field.label?.tr() ?? 'Submit'),
+            child: Text(field.label?.tr() ?? 'button_label'.tr()),
           ),
         );
 
