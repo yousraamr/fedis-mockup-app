@@ -1,0 +1,13 @@
+const String formTitle = "form_title";
+const String subtitleLabel = "subtitle_label";
+const String fullnameLabel = "fullname_label";
+const String emailLabel = "email_label";
+const String passwordLabel = "password_label";
+const String buttonLabel = "button_label";
+const String fullnameValidationMessage = "fullname_validationMessage";
+const String emailValidationMessage = "email_validationMessage";
+const String passwordValidationMessage = "password_validationMessage";
+const String pleaseFixErrors = "please_fix_errors";
+const String minimumLength = "minimum_length";
+const String registrationSuccess = "registration_success";
+const String errorServer = "error_server";
