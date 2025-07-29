@@ -63,13 +63,15 @@
   "services": "الخدمات",
   "dark_mode": "الوضع الداكن",
 
-  "form_title": "نموذج الخدمة",
-  "Enter order information": "أدخل معلومات الطلب",
-  "Name of applicant": "اسم مقدم الطلب",
-  "National number": "الرقم القومي",
-  "Mobile number": "رقم الهاتف المحمول",
-  "Submit": "إرسال",
-  "form_submitted": "تم إرسال النموذج بنجاح",
-  "Step 1/2": "الخطوة 1 من 2",
-  "next": "التالي"
+  "form_title": "تسجيل",
+  "subtitle_label": "لنقم بتسجيلك",
+  "please_fix_errors": "يرجى تصحيح الأخطاء والمحاولة مرة أخرى.",
+  "minimum_length": "الحد الأدنى للطول هو {0}.",
+  "fullname_label": "الاسم الكامل",
+  "email_label": "البريد الإلكتروني",
+  "password_label": "كلمة المرور",
+  "button_label": "سجّل الآن",
+  "fullname_validationMessage": "الاسم الكامل مطلوب.",
+  "email_validationMessage": "يرجى إدخال بريد إلكتروني صالح.",
+  "password_validationMessage": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل."
 }
