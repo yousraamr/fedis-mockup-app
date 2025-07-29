@@ -1,47 +1,47 @@
 {
   "services": [
     {
-      "serviceName": "Register",
+      "serviceName": "form_title",
       "serviceLink": "https://fedis.com.eg/",
       "serviceImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/512px-Google_2015_logo.svg.png",
       "formData": [
         {
-          "stepTitle": "Register",
-          "label": "Let's get you signed up!",
+          "stepTitle": "form_title",
+          "label": "subtitle_label",
           "type": "description"
         },
         {
-          "label": "Full Name",
+          "label": "fullname_label",
           "type": "text",
           "id": "fullname",
           "name": "fullname",
           "readOnly": false,
           "required": true,
-          "validationMessage": "Full Name is required.",
+          "validationMessage": "fullname_validationMessage",
           "lg": 12,
           "md": 12
         },
         {
-          "label": "Email",
+          "label": "email_label",
           "type": "email",
           "id": "email",
           "name": "email",
           "readOnly": false,
           "required": true,
-          "validationMessage": "Please enter a valid email.",
+          "validationMessage": "email_validationMessage",
           "regex": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
           "lg": 12,
           "md": 12
         },
         {
-          "label": "Password",
+          "label": "password_label",
           "type": "password",
           "id": "password",
           "name": "password",
           "readOnly": false,
           "required": true,
           "minLength": 6,
-          "validationMessage": "Password must be at least 6 characters.",
+          "validationMessage": "password_validationMessage",
           "lg": 12,
           "md": 12
         },
@@ -49,7 +49,7 @@
           "id": "submitButton",
           "type": "button",
           "name": "Register",
-          "label": "Sign Up",
+          "label": "button_label",
           "lg": 12,
           "color": "success",
           "action": "submit",
