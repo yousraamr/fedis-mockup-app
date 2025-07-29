@@ -241,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
         try {
           final response = await Dio().post(
-            'https://cartverse-data.onrender.com/register', // You can make this dynamic too
+            'https://cartverse-data.onrender.com/register',
             data: data,
           );
           showSuccessSnackBar(context, 'registration_success'.tr());
