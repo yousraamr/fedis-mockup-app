@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fedis_mockup_demo/core/utils/snackbar.dart';
 import 'package:fedis_mockup_demo/auth/presentation/view_model/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+
 import 'package:fedis_mockup_demo/themes/theme.dart';
 import 'package:fedis_mockup_demo/auth/presentation/widgets/custom_scaffold.dart';
 import 'package:fedis_mockup_demo/auth/presentation/pages/login_screen.dart';
-
 import '../../../core/utils/service_loader.dart';
 import 'package:fedis_mockup_demo/home/home_data/models/form_field_data.dart';
 
@@ -19,12 +20,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
+  final Map<String, TextEditingController> _controllers = {};
   bool agreePersonalData = false;
   bool _obscurePassword = true;
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   List<FormFieldData> _formFields = [];
   bool _isLoadingForm = true;
@@ -51,86 +49,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: _isLoadingForm
           ? const Center(child: CircularProgressIndicator())
           : Column(
-              children: [
-                const Expanded(flex: 1, child: SizedBox(height: 10)),
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
-                    decoration: BoxDecoration(
-                      color: lightColorScheme.onPrimary,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
+        children: [
+          const Expanded(flex: 1, child: SizedBox(height: 10)),
+          Expanded(
+            flex: 7,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
+              decoration: BoxDecoration(
+                color: lightColorScheme.onPrimary,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(40.0),
+                  topRight: Radius.circular(40.0),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formSignupKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'get_started'.tr(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(color: lightColorScheme.primary),
                       ),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formSignupKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Header Title
-                            Text(
-                              'get_started'.tr(),
+                      const SizedBox(height: 40),
+
+                      // Render all fields from JSON
+                      ..._formFields.map((field) =>
+                          _buildField(field, context, authProvider)),
+
+                      const SizedBox(height: 30),
+                      _orDivider(context, 'sign_up_with'.tr()),
+                      const SizedBox(height: 30),
+
+                      // Already have account
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'already_have_account'.tr(),
+                            style: TextStyle(
+                                color: lightColorScheme.onBackground),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const SignInScreen()),
+                              );
+                            },
+                            child: Text(
+                              'sign_in'.tr(),
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineLarge!
-                                  .copyWith(color: lightColorScheme.primary),
+                                  .bodyLarge!
+                                  .copyWith(
+                                color: lightColorScheme.primary,
+                              ),
                             ),
-                            const SizedBox(height: 40),
-
-                            // Dynamic Fields
-                            ..._formFields.map((field) =>
-                                _buildField(field, context, authProvider)),
-
-                            const SizedBox(height: 30.0),
-                            _orDivider(context, 'sign_up_with'.tr()),
-                            const SizedBox(height: 30.0),
-
-                            // Already have account
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'already_have_account'.tr(),
-                                  style: TextStyle(
-                                      color: lightColorScheme.onBackground),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const SignInScreen()),
-                                    );
-                                  },
-                                  child: Text(
-                                    'sign_in'.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          color: lightColorScheme.primary,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildField(
       FormFieldData field, BuildContext context, AuthProvider authProvider) {
+    final id = field.id;
+
     switch (field.type) {
       case 'description':
         return Column(
@@ -146,11 +145,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       case 'text':
       case 'email':
       case 'password':
-        final controller = _getController(field.id);
+        _controllers.putIfAbsent(id!, () => TextEditingController());
         return Column(
           children: [
             TextFormField(
-              controller: controller,
+              controller: _controllers[id],
               obscureText: field.type == 'password' ? _obscurePassword : false,
               validator: (value) {
                 if (field.required == true &&
@@ -174,13 +173,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ).copyWith(
                 suffixIcon: field.type == 'password'
                     ? IconButton(
-                        icon: Icon(_obscurePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () => setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        }),
-                      )
+                  icon: Icon(_obscurePassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () => setState(() {
+                    _obscurePassword = !_obscurePassword;
+                  }),
+                )
                     : null,
               ),
             ),
@@ -211,33 +210,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () async {
-                  if (_formSignupKey.currentState!.validate() &&
-                      agreePersonalData) {
-                    final name = _nameController.text.trim();
-                    final email = _emailController.text.trim();
-                    final password = _passwordController.text.trim();
-
-                    if (name.isEmpty || email.isEmpty || password.isEmpty) {
-                      showErrorSnackBar(context, 'please_fill_all_fields'.tr());
-                      return;
-                    }
-
-                    final success = await authProvider.register(
-                        context, name, email, password);
-                    if (success && context.mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const SignInScreen()),
-                      );
-                    }
-                  } else if (!agreePersonalData) {
-                    showErrorSnackBar(context, 'please_agree'.tr());
-                  }
-                },
+                onPressed: () =>
+                    _handleButtonAction(field, context, authProvider),
                 child: authProvider.isLoading
                     ? const CircularProgressIndicator()
-                    : Text(field.label?.tr() ?? 'Submit'),
+                    : Text(field.label?.tr() ?? 'submit'),
               ),
             ),
           ],
@@ -248,11 +225,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  TextEditingController _getController(String? id) {
-    if (id == 'fullname') return _nameController;
-    if (id == 'email') return _emailController;
-    if (id == 'password') return _passwordController;
-    return TextEditingController();
+  void _handleButtonAction(FormFieldData field, BuildContext context,
+      AuthProvider authProvider) async {
+    if (field.action == 'submit') {
+      if (_formSignupKey.currentState!.validate()) {
+        if (!agreePersonalData) {
+          showErrorSnackBar(context, 'please_agree'.tr());
+          return;
+        }
+
+        final data = <String, String>{};
+        _controllers.forEach((key, controller) {
+          data[key] = controller.text.trim();
+        });
+
+        try {
+          final response = await Dio().post(
+            'https://cartverse-data.onrender.com/register', // You can make this dynamic too
+            data: data,
+          );
+          showSuccessSnackBar(context, 'registration_success'.tr());
+          print('Response: ${response.data}');
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInScreen()),
+            );
+          }
+        } catch (e) {
+          showErrorSnackBar(context, '${'error_server'.tr()}: ${e.toString()}');
+        }
+      } else {
+        showErrorSnackBar(context, 'please_fix_errors'.tr());
+      }
+    }
   }
 
   InputDecoration _inputDecoration(String label, String hint) {
