@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedis_mockup_demo/home/home_data/models/form_field_data.dart';
+import 'package:fedis_mockup_demo/auth/presentation/pages/login_screen.dart';
 
 import '../../../auth/data/datasource/auth_datasourse.dart';
 import '../../../core/utils/snackbar.dart';
@@ -142,6 +143,12 @@ class _DynamicFormPageState extends State<DynamicFormPage> {
           );
           showSuccessSnackBar(context, 'registration_success'.tr());
           print('Response: ${response.data}');
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInScreen()),
+            );
+          }
         } catch (e) {
           showErrorSnackBar(context, '${'error_server'.tr()}: ${e.toString()}');
         }
