@@ -57,7 +57,6 @@
   "error_user_not_found": "User not found",
   "error_server": "Something went wrong, please try again",
   "error_email_exists": "Email already exists",
-
   "login_success": "Login Successful",
   "registration_success": "Registration Successful",
   "invalid_server_response": "Invalid server response",
@@ -65,13 +64,15 @@
   "services": "Services",
   "dark_mode": "Dark Mode",
 
-  "form_title": "Service Form",
-  "Enter order information": "Enter order information",
-  "Name of applicant": "Name of applicant",
-  "National number": "National number",
-  "Mobile number": "Mobile number",
-  "Submit": "Submit",
-  "form_submitted": "Form submitted successfully",
-  "Step 1/2": "Step 1/2",
-  "next": "Next"
+  "form_title": "Register",
+  "subtitle_label": "Let's get you signed up!",
+  "fullname_label": "Full Name",
+  "email_label": "Email",
+  "password_label": "Password",
+  "button_label": "Sign Up",
+  "fullname_validationMessage": "Full name is required.",
+  "email_validationMessage": "Please enter a valid email address.",
+  "password_validationMessage": "Password is required.",
+  "please_fix_errors": "Please fix the errors in the form.",
+  "minimum_length": "Minimum length is {0} characters."
 }
