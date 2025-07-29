@@ -116,34 +116,38 @@ class _DynamicFormPageState extends State<DynamicFormPage> {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                final formData = <String, String>{};
-                _controllers.forEach((key, controller) {
-                  formData[key] = controller.text.trim();
-                });
-
-                try {
-                  final response = await Dio().post(
-                    'https://cartverse-data.onrender.com/register',
-                    data: formData,
-                  );
-
-                  showSuccessSnackBar(context, 'registration_success'.tr());
-                  print('Response: ${response.data}');
-                } catch (e) {
-                  showErrorSnackBar(context, '${'error_server'.tr()}: ${e.toString()}');
-                }
-              } else {
-                showErrorSnackBar(context, 'please_fix_errors'.tr());
-              }
-            },
+            onPressed: () => _handleButtonAction(field),
             child: Text(field.label?.tr() ?? 'button_label'.tr()),
           ),
         );
-
       default:
         return const SizedBox.shrink();
+    }
+  }
+
+  void _handleButtonAction(FormFieldData buttonField) async {
+    final action = buttonField.action;
+
+    if (action == 'submit') {
+      if (_formKey.currentState!.validate()) {
+        final formData = <String, String>{};
+        _controllers.forEach((key, controller) {
+          formData[key] = controller.text.trim();
+        });
+
+        try {
+          final response = await Dio().post(
+            'https://cartverse-data.onrender.com/register',
+            data: formData,
+          );
+          showSuccessSnackBar(context, 'registration_success'.tr());
+          print('Response: ${response.data}');
+        } catch (e) {
+          showErrorSnackBar(context, '${'error_server'.tr()}: ${e.toString()}');
+        }
+      } else {
+        showErrorSnackBar(context, 'please_fix_errors'.tr());
+      }
     }
   }
 }
